@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Track your daily work with beautiful 3D animations and intuitive interface">
+    <meta name="keywords" content="daily tracker, work log, 3D UI, task management">
+    <meta name="author" content="imp DaTa">
+    <title>Daily Work Tracker 3D | Track Your Progress</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
+</head>
+<body>
+    <!-- Background 3D Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">📝</span>
+                    <h1>Daily Work Tracker</h1>
+                </div>
+                <nav class="nav">
+                    <button id="themeToggle" class="btn-icon" title="Toggle Theme">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                    <button id="shareBtn" class="btn-primary">
+                        <span>📤</span> Share
+                    </button>
+                    <button id="exportBtn" class="btn-secondary">
+                        <span>💾</span> Export
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Search and Filter Section -->
+            <section class="controls">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 Search tasks..." class="search-input">
+                </div>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="today">Today</button>
+                    <button class="filter-btn" data-filter="week">This Week</button>
+                </div>
+            </section>
+
+            <!-- Stats Section -->
+            <section class="stats">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-info">
+                        <h3 id="totalTasks">0</h3>
+                        <p>Total Tasks</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-info">
+                        <h3 id="todayTasks">0</h3>
+                        <p>Today's Tasks</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-info">
+                        <h3 id="streakDays">0</h3>
+                        <p>Day Streak</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Add Task Button -->
+            <section class="add-task-section">
+                <button id="addTaskBtn" class="btn-add-task">
+                    <span class="plus-icon">+</span>
+                    <span>Add New Task</span>
+                </button>
+            </section>
+
+            <!-- Tasks Grid -->
+            <section class="tasks-section">
+                <h2 class="section-title">Your Daily Work Log</h2>
+                <div id="tasksGrid" class="tasks-grid">
+                    <!-- Tasks will be dynamically added here -->
+                </div>
+                <div id="emptyState" class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h3>No tasks yet</h3>
+                    <p>Start tracking your daily work by adding your first task!</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal for Adding/Editing Tasks -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Task</h2>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <form id="taskForm" class="task-form">
+                <div class="form-group">
+                    <label for="taskHeading">Task Heading *</label>
+                    <input type="text" id="taskHeading" placeholder="Enter task heading..." required>
+                </div>
+                <div class="form-group">
+                    <label for="taskDescription">Description *</label>
+                    <textarea id="taskDescription" rows="6" placeholder="Describe your work in detail..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="taskCategory">Category</label>
+                    <select id="taskCategory">
+                        <option value="work">💼 Work</option>
+                        <option value="personal">👤 Personal</option>
+                        <option value="learning">📚 Learning</option>
+                        <option value="meeting">🤝 Meeting</option>
+                        <option value="other">📌 Other</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn-submit">Save Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Share Your Work Log</h2>
+                <button class="modal-close" id="closeShareModal">&times;</button>
+            </div>
+            <div class="share-content">
+                <p>Share this link with others to show your daily work:</p>
+                <div class="share-link-box">
+                    <input type="text" id="shareLink" readonly>
+                    <button id="copyLinkBtn" class="btn-copy">Copy</button>
+                </div>
+                <div class="share-options">
+                    <button class="share-option" data-platform="twitter">🐦 Twitter</button>
+                    <button class="share-option" data-platform="linkedin">💼 LinkedIn</button>
+                    <button class="share-option" data-platform="email">📧 Email</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Made with ❤️ by <a href="https://github.com/dataimp2-max" target="_blank">imp DaTa</a></p>
+            <p>
+                <a href="https://github.com/dataimp2-max/daily-work-tracker-3d" target="_blank">⭐ Star on GitHub</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
